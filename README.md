@@ -1,24 +1,42 @@
 ## Project Structure
 ```shell
-nestjs-db-starter/
+nestjs-starter/
 ├── src/
-│   ├── config/
-│   │   └── database.config.ts
-│   ├── entities/
-│   │   └── user.entity.ts
-│   ├── user/
+│   ├── common/
+│   │   ├── decorators/
+│   │   │   └── api-pagination.decorator.ts
 │   │   ├── dto/
-│   │   │   ├── create-user.dto.ts
-│   │   │   └── update-user.dto.ts
-│   │   ├── user.controller.ts
-│   │   ├── user.module.ts
-│   │   └── user.service.ts
-│   ├── app.controller.ts
+│   │   │   └── pagination-query.dto.ts
+│   │   ├── filters/
+│   │   │   └── http-exception.filter.ts
+│   │   ├── interceptors/
+│   │   │   └── transform.interceptor.ts
+│   │   ├── interfaces/
+│   │   │   └── base-entity.interface.ts
+│   │   └── services/
+│   │       └── database-health.service.ts
+│   ├── config/
+│   │   ├── config.module.ts
+│   │   ├── database.config.ts
+│   │   ├── app.config.ts
+│   │   └── validation.schema.ts
+│   ├── health/
+│   │   ├── health.controller.ts
+│   │   ├── health.module.ts
+│   │   └── health.service.ts
+│   ├── modules/
+│   │   ├── user/
+│   │   │   ├── dto/
+│   │   │   │   ├── create-user.dto.ts
+│   │   │   │   └── update-user.dto.ts
+│   │   │   ├── entities/
+│   │   │   │   └── user.entity.ts
+│   │   │   ├── user.controller.ts
+│   │   │   ├── user.module.ts
+│   │   │   └── user.service.ts
+│   │   └── [other domain modules]/
 │   ├── app.module.ts
-│   ├── app.service.ts
 │   └── main.ts
-├── data/
-│   └── .gitkeep
 ├── .env.development
 ├── .env.test
 ├── .env.production
@@ -56,6 +74,39 @@ nestjs-db-starter/
    - Detailed project structure 
    - Setup instructions 
    - Running commands for different environments
+
+## Advanced
+
+1. (Advanced) Modular Architecture
+   - Separated Configuration: Created a dedicated config module with environment validation 
+   - Domain-Based Structure: Organized code by business domains in the modules directory 
+   - Common Components: Added a common directory for shared code (filters, interceptors, DTOs)
+   - Health Monitoring: Added a dedicated health module for application monitoring
+
+2. (Advanced) Improved Application Structure
+   - Global Error Handling: Added HTTP exception filter for consistent error responses 
+   - Response Transformation: Added interceptor to standardize API responses 
+   - API Versioning: Implemented API versioning and prefixing 
+   - Environment Configuration: Enhanced environment validation with Joi 
+   - Route Organization: Created clear API paths with proper HTTP status codes
+
+3. (Advanced) Enhanced Database Features
+   - Pagination Support: Added reusable pagination for all collection endpoints 
+   - Better Entity Design: Improved entity structure with proper indexing 
+   - Health Checks: Dedicated database health check service 
+   - Optimized Queries: Better repository patterns in service classes
+
+4. (Advanced) Developer Experience
+   - Consistent Response Format: All API responses follow the same structure 
+   - Better Type Safety: Added interfaces and improved TypeScript usage 
+   - Custom Decorators: Added utility decorators for common patterns 
+   - Documentation Support: Added Swagger support for API documentation
+
+5. (Advanced) Scalability Improvements
+   - Proper Error Logging: Added error logging for better debugging 
+   - Environment-Specific Config: Better separation of environment concerns 
+   - Maintainable Structure: Code is now organized for future growth 
+   - Modular Components: Easy to add new features without affecting existing code
 
 ## Getting Started
 

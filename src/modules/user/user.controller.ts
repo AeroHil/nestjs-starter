@@ -1,16 +1,30 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Param,
+    Put,
+    Delete,
+    HttpCode,
+    HttpStatus,
+    Query,
+} from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from '../entities/user.entity';
+import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
+import { ApiPagination } from '../../common/decorators/api-pagination.decorator';
 
 @Controller('users')
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Get()
-    findAll(): Promise<User[]> {
-        return this.userService.findAll();
+    @ApiPagination()
+    findAll(@Query() paginationQuery: PaginationQueryDto) {
+        return this.userService.findAll(paginationQuery);
     }
 
     @Get(':id')
@@ -19,6 +33,7 @@ export class UserController {
     }
 
     @Post()
+    @HttpCode(HttpStatus.CREATED)
     create(@Body() createUserDto: CreateUserDto): Promise<User> {
         return this.userService.create(createUserDto);
     }

@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 
 @Injectable()
 export class UserService {
@@ -12,8 +13,22 @@ export class UserService {
         private usersRepository: Repository<User>,
     ) {}
 
-    findAll(): Promise<User[]> {
-        return this.usersRepository.find();
+    async findAll(paginationQuery: PaginationQueryDto) {
+        const [data, total] = await this.usersRepository.findAndCount({
+            skip: paginationQuery.skip,
+            take: paginationQuery.limit,
+            order: { createdAt: 'DESC' },
+        });
+
+        return {
+            data,
+            meta: {
+                total,
+                page: paginationQuery.page,
+                limit: paginationQuery.limit,
+                totalPages: Math.ceil(total / paginationQuery.limit),
+            },
+        };
     }
 
     async findOne(id: number): Promise<User> {
@@ -30,17 +45,14 @@ export class UserService {
     }
 
     async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-        const result = await this.usersRepository.update(id, updateUserDto);
-        if (result.affected === 0) {
-            throw new NotFoundException(`User with ID ${id} not found`);
-        }
-        return this.findOne(id);
+        const user = await this.findOne(id);
+        const updatedUser = { ...user, ...updateUserDto };
+        await this.usersRepository.save(updatedUser);
+        return updatedUser;
     }
 
     async remove(id: number): Promise<void> {
-        const result = await this.usersRepository.delete(id);
-        if (result.affected === 0) {
-            throw new NotFoundException(`User with ID ${id} not found`);
-        }
+        const user = await this.findOne(id);
+        await this.usersRepository.remove(user);
     }
 }
