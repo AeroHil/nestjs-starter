@@ -122,8 +122,15 @@ Data directory for SQLite:
 mkdir -p data
 touch data/.gitkeep
 ```
+Running the application
+To speed up dev process (20x faster builds use `-b swc`)
 
-Run the development server (using SQLite):
+```bash
+npm run start
+npm run start -- -b swc 
+```
+
+Run the development server (using SQLite) while watching file changes:
 
 ```bash
 npm run start:dev
