@@ -130,6 +130,20 @@ npm run start
 npm run start -- -b swc 
 ```
 
+Create a local `.env.development` variables file
+```bash
+touch .env.development
+```
+```text
+SQLITE_DATABASE=data/dev.sqlite
+DB_LOGGING=true
+PORT=3000
+NODE_ENV=development
+API_PREFIX=api
+API_VERSION=v1
+APP_NAME=NestJS API
+```
+
 Run the development server (using SQLite) while watching file changes:
 
 ```bash
@@ -152,6 +166,7 @@ npm run start:prod
 
 ## Stack
 - TypeScript
-- NestJS
+- [NestJS](https://docs.nestjs.com/)
 - Express HTTP server (default)
-- TypeORM
+- [TypeORM](https://typeorm.io/)
+- Swagger UI
