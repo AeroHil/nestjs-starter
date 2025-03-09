@@ -164,6 +164,11 @@ npm run build
 npm run start:prod
 ```
 
+Look at Swagger UI Docs
+```text
+http://localhost:3000/docs
+```
+
 ## Stack
 - TypeScript
 - [NestJS](https://docs.nestjs.com/)

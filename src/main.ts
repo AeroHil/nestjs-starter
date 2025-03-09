@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
@@ -26,6 +27,29 @@ async function bootstrap() {
   );
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
+
+  // Swagger configuration
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('NestJS API Documentation')
+    .setDescription('NestJS API Starter')
+    .setVersion('1.0')
+    .addTag('your-api-tag')
+    // Add bearer auth if your API uses JWT or other token auth
+    // .addBearerAuth(
+    //     {
+    //       type: 'http',
+    //       scheme: 'bearer',
+    //       bearerFormat: 'JWT',
+    //       name: 'JWT',
+    //       description: 'Enter JWT token',
+    //       in: 'header',
+    //     },
+    //     'JWT-auth', // This name here is important for reference in your controller
+    // )
+    .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(port);
   /* eslint-disable no-console */
